@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+
+depend() {
+    need net
+    after firewall
+    keyword -stop
+}
+
+SSHD=/usr/bin/sshd
+SSHD_CONF=/etc/ssh/sshd_config
+SSHD_PIDFILE=/run/sshd.pid
+
+start() {
+    ebegin "Starting OpenSSH server"
+    mkdir -p /run/sshd
+    start-stop-daemon --start --exec $SSHD --pidfile $SSHD_PIDFILE -- -D -f $SSHD_CONF
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping OpenSSH server"
+    start-stop-daemon --stop --exec $SSHD --pidfile $SSHD_PIDFILE
+    eend $?
+}

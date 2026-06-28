@@ -1,0 +1,8 @@
+# Ukuran zram: 50% dari RAM
+ZRAM_SIZE=50
+
+# Algoritma kompresi: zstd (terbaik untuk performa)
+ZRAM_ALGO=zstd
+
+# Prioritas: lebih tinggi dari swap file (100)
+ZRAM_PRIORITY=100

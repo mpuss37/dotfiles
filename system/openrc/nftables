@@ -1,0 +1,18 @@
+#!/sbin/openrc-run
+
+depend() {
+    need net
+    before firewall
+}
+
+start() {
+    ebegin "Loading nftables rules"
+    nft -f /etc/nftables.conf
+    eend $?
+}
+
+stop() {
+    ebegin "Flushing nftables rules"
+    nft flush ruleset
+    eend $?
+}

@@ -1,0 +1,44 @@
+// Allow users group to manage NetworkManager without password
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("users")) {
+        if (action.id == "org.freedesktop.NetworkManager.settings.modify.system" ||
+            action.id == "org.freedesktop.NetworkManager.settings.modify.own" ||
+            action.id == "org.freedesktop.NetworkManager.network-control" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-wifi" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-wwan" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-bluetooth") {
+            return polkit.Result.YES;
+        }
+    }
+});
+
+// Allow users group to manage Bluetooth without password
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("users")) {
+        if (action.id == "org.bluez.bluetooth.manage" ||
+            action.id == "org.bluez.bluetooth.scan" ||
+            action.id == "org.bluez.bluetooth.advertise") {
+            return polkit.Result.YES;
+        }
+    }
+});
+
+// Allow users group to manage power/sleep settings
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("users")) {
+        if (action.id == "org.freedesktop.login1.manage" ||
+            action.id == "org.freedesktop.login1.set-wall-message" ||
+            action.id.indexOf("org.freedesktop.login1.") == 0) {
+            return polkit.Result.YES;
+        }
+    }
+});
+
+// Allow users group to use UPower (battery info)
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("users")) {
+        if (action.id.indexOf("org.freedesktop.upower.") == 0) {
+            return polkit.Result.YES;
+        }
+    }
+});

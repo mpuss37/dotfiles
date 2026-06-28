@@ -1,0 +1,34 @@
+# Monitor passwd/shadow/group/sudoers changes
+-w /etc/passwd -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/sudoers -p wa -k identity
+-w /etc/sudoers.d/ -p wa -k identity
+
+# Monitor SSH config
+-w /etc/ssh/sshd_config -p wa -k sshd_config
+
+# Monitor cron
+-w /etc/crontab -p wa -k cron
+-w /etc/cron.d/ -p wa -k cron
+-w /var/spool/cron/ -p wa -k cron
+
+# Monitor kernel modules
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+
+# Monitor login/logout events
+-w /var/log/lastlog -p wa -k logins
+-w /var/run/faillock/ -p wa -k logins
+
+# Monitor time changes
+-w /etc/localtime -p wa -k time-change
+-w /usr/share/zoneinfo/ -p wa -k time-change
+
+# Monitor network configuration
+-w /etc/hosts -p wa -k network
+-w /etc/sysconfig/network -p wa -k network
+
+# Monitor LAMPP config
+-w /opt/lampp/etc/ -p wa -k lampp-config
