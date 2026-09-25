@@ -1,55 +1,60 @@
-# dotfiles - Artix Linux Setup
+# dotfiles
 
-> **System**: Artix Linux (OpenRC) | Kernel 7.0.13 | i3wm
-> **Last Updated**: 29 June 2026
-> **Hardware**: Intel i3-1005G1, 11GB RAM, NVMe SSD
-> **Init**: OpenRC (systemd-free)
+Kumpulan konfigurasi pribadi (dotfiles) untuk **Artix Linux OpenRC + i3wm**,
+dipakai dengan [GNU Stow](https://www.gnu.org/software/stow/).
 
-## Quick Start
+> Snapshot konfigurasi yang benar-benar dipakai di sistem aktif.
+> Untuk installer otomasi lengkap (paket, service, config `/etc`, security),
+> lihat repo terpisah: [`artix-openrc-installer`](https://github.com/mpuss37/artix-openrc-installer).
+
+## Isi
+
+| Package | Target | Keterangan |
+|---------|--------|------------|
+| `bashrc`      | `~/.bashrc`                       | Shell config, alias, export, fungsi |
+| `i3`          | `~/.config/i3/config`             | Window manager i3 |
+| `i3status`    | `~/.config/i3status/`             | Status bar i3 |
+| `kitty`       | `~/.config/kitty/kitty.conf`      | Terminal (JetBrains Mono) |
+| `picom`       | `~/.config/picom/picom.conf`      | Compositor |
+| `neofetch`    | `~/.config/neofetch/config.conf`  | Info sistem |
+| `ranger`      | `~/.config/ranger/`               | File manager |
+| `htop`        | `~/.config/htop/htoprc`           | Process viewer |
+| `btop`        | `~/.config/btop/btop.conf`        | Resource monitor |
+| `cava`        | `~/.config/cava/config`           | Audio visualizer |
+| `mimeapps`    | `~/.config/mimeapps.list`         | Asosiasi aplikasi default |
+| `scripts`     | `~/doc/kodingan/skrip/`           | Skrip utilitas (audio, brightness, screenshot, wifi, system) |
+
+## Cara Pakai
+
+Butuh `stow`:
 
 ```bash
-git clone https://github.com/mpuss37/dotfiles.git
-cd dotfiles
-./install.sh
+sudo pacman -S stow
 ```
 
-## Structure
+Stow semua dotfiles ke `$HOME`:
 
-| Folder | Description |
-|--------|-------------|
-| `bashrc/` | Shell config (.bashrc) |
-| `i3/` | i3 window manager config |
-| `kitty/` | Kitty terminal config |
-| `picom/` | Picom compositor config |
-| `i3status/` | i3status bar config |
-| `neofetch/` | Neofetch system info |
-| `ranger/` | Ranger file manager |
-| `htop/` | Htop process viewer |
-| `btop/` | Btop process viewer |
-| `cava/` | Cava audio visualizer |
-| `gtk/` | GTK theme settings |
-| `mimeapps/` | File associations |
-| `scripts/` | Automation scripts |
-| `system/` | System configs (need root) |
-| `docs/` | Documentation |
+```bash
+git clone https://github.com/mpuss37/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+stow -t "$HOME" bashrc i3 i3status kitty picom neofetch ranger htop btop cava mimeapps
+```
 
-## Key Packages
+Atau satu per satu:
 
-i3-wm, kitty, picom, i3status, firefox, ranger, fzf, ripgrep, btop, htop,
-cava, neofetch, nftables, fail2ban, apparmor, audit, stow
+```bash
+stow -t "$HOME" i3
+```
 
-## Security
+### Unstow
 
-- nftables firewall (LAMPP ports open)
-- fail2ban (SSH + Apache jails)
-- AppArmor (Firefox + Kitty enforced)
-- Audit rules (passwd, shadow, sudoers, sshd)
-- Sysctl hardening (SYN cookies, IP spoofing, etc)
+```bash
+stow -D -t "$HOME" i3
+```
 
-## Scripts Guide
+## Catatan
 
-See [docs/scripts.md](docs/scripts.md)
-
-## System Configs
-
-See [docs/system-info.md](docs/system-info.md)
+- `scripts/` tidak di-stow ke `$HOME` langsung; installer menyalinnya ke
+  `~/doc/kodingan/skrip/`. Kalau pakai repo ini sendiri, stow/salin manual.
+- File yang memuat kredensial (API key, SSID/password WiFi) sudah
+  di-sanitasi menjadi placeholder.
